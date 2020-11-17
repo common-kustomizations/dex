@@ -1,0 +1,21 @@
+---
+# public url under which this dex instance is reachable
+issuer: http://localhost:8000
+
+# instructs dex to store its state as kubernetes custom resources
+storage:
+  type: kubernetes
+  config:
+    inCluster: true
+
+# listen on port 80 with HTTP (not HTTPS)
+web:
+  http: 0.0.0.0:8000
+
+# enables internal user db with preconfigured user admin:password
+enablePasswordDB: true
+staticPasswords:
+  - email: admin@exmple.com
+    hash: "$2a$10$2b2cU8CPhOTaGrs1HRQuAueS7JTT5ZHsHSzYiFPm1leZck7Mc8T4W"
+    username: admin
+    userId: 08a8684b-db88-4b73-90a9-3cd1661f5466

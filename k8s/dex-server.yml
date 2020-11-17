@@ -1,0 +1,52 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dex-server
+  labels:
+    app.kubernetes.io/name: dex-server
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dex-server
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: dex-server
+    spec:
+      serviceAccountName: dex
+      volumes:
+        - name: config
+          configMap:
+            name: dex-server
+      containers:
+        - name: dex
+          image: quay.io/dexidp/dex
+          imagePullPolicy: Always
+          command: [ "/usr/local/bin/dex", "serve", "/app/config/config.yml" ]
+          envFrom:
+            - secretRef:
+                name: dex-server
+          ports:
+            - name: http
+              containerPort: 8000
+          volumeMounts:
+            - name: config
+              mountPath: /app/config
+
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dex-server
+  labels:
+    app.kubernetes.io/name: dex-server
+spec:
+  selector:
+    app.kubernetes.io/name: dex-server
+  ports:
+    - name: http
+      port: 80
+      targetPort: http

@@ -1,0 +1,22 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: dex
+commonLabels:
+  app.kubernetes.io/part-of: dex
+
+resources:
+  - k8s/namespace.yml
+  - k8s/dex-server.yml
+  - k8s/rbac.yml
+
+images:
+  - name: quay.io/dexidp/dex
+    newTag: v2.26.0
+
+configMapGenerator:
+  - name: dex-server
+    files:
+      - "config.yml=config/config.yml"
+secretGenerator:
+  - name: dex-server
