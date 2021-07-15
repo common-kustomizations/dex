@@ -12,7 +12,7 @@ resources:
 
 images:
   - name: quay.io/dexidp/dex
-    newTag: v2.26.0
+    newTag: v2.28.1
 
 configMapGenerator:
   - name: dex-server
